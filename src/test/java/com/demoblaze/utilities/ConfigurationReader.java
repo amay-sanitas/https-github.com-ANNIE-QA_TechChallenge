@@ -30,7 +30,7 @@ public class ConfigurationReader {
     }
 
 
-    public static String get(String keyWord){
+    public static String get(String keyWord) {
 
         return properties.getProperty(keyWord);
     }

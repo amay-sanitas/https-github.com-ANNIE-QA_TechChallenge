@@ -10,12 +10,16 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class PurchaseSteps {
 
     ProductPage productPage = new ProductPage();
     PlaceOrderPage placeOrder = new PlaceOrderPage();
+
     int expectedPurchaseAmount;
 
     @Given("User is on the home page")
@@ -25,7 +29,7 @@ public class PurchaseSteps {
 
     @When("User adds {string} from {string}")
     public void user_adds_from(String product, String category) {
-        productPage.navigateTo(product,category);
+        productPage.navigateTo(product, category);
         productPage.addToCart();
         productPage.home.click();
     }
@@ -40,6 +44,9 @@ public class PurchaseSteps {
 
     @And("User clicks on place order")
     public void userClicksOnPlaceOrder() {
+
+
+        BrowserUtils.waitElementToClickable(productPage.placeOrder);
         productPage.cart.click();
         expectedPurchaseAmount = Integer.parseInt(productPage.totalPrice.getText());
 
@@ -49,13 +56,12 @@ public class PurchaseSteps {
     @And("User fills the form for order and clicks on purchase button")
     public void userFillsTheFormForOrderAndClicksOnPurchaseButton() {
         placeOrder.fillForm();
-      }
+    }
 
     @Then("Order ID and order amount should be as expected")
     public void orderIDAndOrderAmountShouldBeAsExpected() {
 
-//        BrowserUtils.sleep(1);
-
+        BrowserUtils.waitElementToClickable(placeOrder.orderDetails);
         String orderDetailsText = placeOrder.orderDetails.getText();
         System.out.println("orderDetailsText = " + orderDetailsText);
 
@@ -65,7 +71,7 @@ public class PurchaseSteps {
         int actualPurchaseAmount = Integer.parseInt(orderDetailsText.split("\n")[1].split(" ")[1]);
         System.out.println("actualPurchaseAmount = " + actualPurchaseAmount);
 
-        Assert.assertEquals("Price is NOT as expected",expectedPurchaseAmount,actualPurchaseAmount);
+        Assert.assertEquals("Price is NOT as expected", expectedPurchaseAmount, actualPurchaseAmount);
 
     }
 

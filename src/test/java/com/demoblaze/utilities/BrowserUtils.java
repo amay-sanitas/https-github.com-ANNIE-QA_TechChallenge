@@ -1,6 +1,8 @@
 package com.demoblaze.utilities;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,17 @@ public class BrowserUtils {
 
     }
 
-    public static List<String> getElementsText(List<WebElement> list){
+    public static List<String> getElementsText(List<WebElement> list) {
         List<String> elemTexts = new ArrayList<>();
         for (WebElement webElement : list) {
             elemTexts.add(webElement.getText());
         }
         return elemTexts;
+    }
+
+    public static void waitElementToClickable(WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(Driver.get(), 10);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 
 
